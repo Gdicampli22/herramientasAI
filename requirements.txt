@@ -5,3 +5,6 @@ textblob
 transformers
 torch
 streamlit
+google-generativeai
+python-dotenv
+pydantic
