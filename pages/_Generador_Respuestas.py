@@ -7,7 +7,7 @@ st.set_page_config(page_title="AI Auto-Respuesta", page_icon="🤖", layout="cen
 # Si estamos en Streamlit Cloud, usamos la URL de Render.
 # Si estamos en tu PC, usamos localhost.
 if "RENDER_URL" in st.secrets:
-    API_URL = st.secrets["https://herramientasai.onrender.com/"]
+    API_URL = st.secrets["API_URL_RENDER"]
 else:
     API_URL = "http://127.0.0.1:8000"
 YOUR_NAME = "Gastón Di Campli" # <--- Pon tu nombre

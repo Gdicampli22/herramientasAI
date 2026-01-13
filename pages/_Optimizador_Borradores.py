@@ -5,7 +5,7 @@ from PIL import Image
 # --- CONFIGURACIÓN ---
 st.set_page_config(page_title="AI Optimizador", page_icon="✍️", layout="centered")
 if "RENDER_URL" in st.secrets:
-    API_URL = st.secrets["https://herramientasai.onrender.com/"]
+    API_URL = st.secrets["API_URL_RENDER"]
 else:
     API_URL = "http://127.0.0.1:8000"
 YOUR_NAME = "Gastón Di Campli" # <--- Pon tu nombre
