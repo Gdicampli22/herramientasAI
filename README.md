@@ -1,45 +1,48 @@
 # 🎧 AI Support Suite
 
-![Python](https://img.shields.io/badge/Python-3.10%2B-blue)
+![Python](https://img.shields.io/badge/Python-3.11%2B-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-Backend-green)
 ![Streamlit](https://img.shields.io/badge/Streamlit-Frontend-red)
-![Gemini](https://img.shields.io/badge/AI-Google%20Gemini%203.0-orange)
+![Gemini](https://img.shields.io/badge/AI-Google%20Gemini-orange)
 
 **Suite de herramientas de Inteligencia Artificial diseñada para optimizar y automatizar la comunicación en equipos de Soporte Técnico y Customer Success.**
 
-Este proyecto implementa una arquitectura desacoplada (Backend API + Multiple Frontends) para ofrecer dos soluciones clave: optimización de borradores y generación automática de respuestas.
+Este proyecto implementa una arquitectura moderna para ofrecer soluciones clave: optimización de borradores, generación automática de respuestas y análisis inteligente.
 
 ---
 
 ## 🚀 Características Principales
 
-* **🧠 Motor Multimodal:** Integración con **Google Gemini 3.0 Flash Preview** para procesamiento de texto y audio.
-* **✍️ Optimizador de Borradores (`demo.py`):** Mejora la redacción, tono y gramática de mensajes escritos por agentes.
-* **🤖 Auto-Respuesta Inteligente (`demo2.py`):** Genera respuestas completas a partir del mensaje del cliente.
-* **🎙️ Transcripción de Audio:** Convierte notas de voz (WhatsApp/Soporte) a texto automáticamente.
-* **🌍 Traducción Instantánea:** Soporte nativo para Español, Inglés, Portugués, Francés y Alemán.
-* **📋 Copiado Fácil:** Interfaz optimizada para copiar y pegar respuestas en CRMs (Zendesk, Salesforce, etc.).
+* **🧠 Motor Multimodal:** Integración con **Google Gemini** para procesamiento avanzado de texto.
+* **✍️ Optimizador de Borradores:** Mejora la redacción, tono y gramática de mensajes escritos por agentes.
+* **🤖 Generador de Respuestas:** Crea respuestas completas y empáticas a partir del mensaje del cliente.
+* **🎙️ Transcripción de Audio:** (Próximamente) Convierte notas de voz a texto automáticamente.
+* **🌍 Traducción & Adaptación:** Soporte nativo multilingüe y adaptación de tono (Formal, Empático, Directo).
+* **☁️ Cloud Ready:** Optimizado para despliegue en Streamlit Community Cloud usando gestión de secretos.
 
 ---
 
 ## 🛠️ Stack Tecnológico
 
-* **Backend:** Python + FastAPI (API RESTful).
-* **Frontend:** Streamlit (Interfaces interactivas web).
-* **AI Model:** Google Generative AI (Gemini 3 Flash Preview).
-* **Librerías Clave:** `uvicorn`, `requests`, `python-dotenv`.
+* **Backend:** Python + FastAPI (API RESTful para lógica de negocio).
+* **Frontend:** Streamlit (Interfaz web interactiva multipágina).
+* **AI Model:** Google Generative AI (Gemini Flash).
+* **Gestión de Entorno:** `st.secrets` (Producción) / `.env` (Desarrollo local).
+* **Librerías Clave:** `uvicorn`, `requests`, `python-dotenv`, `spacy`.
 
 ---
 
 ## 📂 Estructura del Proyecto
 
 ```text
-ai-support-suite/
-├── app.py           # Backend: API Server (FastAPI)
-├── rewrite.py       # Lógica: Conexión con Gemini (Brain)
-├── analysis.py      # Lógica: Análisis de texto (NLP)
-├── demo.py          # Frontend 1: Optimizador de Borradores
-├── demo2.py         # Frontend 2: Generador de Respuestas
-├── requirements.txt # Dependencias
-├── .env             # Variables de entorno (API Keys)
-└── logo.png         # Recursos gráficos
+herramientasai/
+├── app.py                   # Backend: API Server (FastAPI) - Lógica central
+├── home.py                  # Frontend: Página de Inicio (Streamlit Entrypoint)
+├── pages/                   # Frontend: Páginas de la aplicación
+│   ├── _Optimizador_Borradores.py
+│   └── _Generador_de_Respuestas.py
+├── rewrite.py               # Módulo: Conexión con Gemini (Brain)
+├── analysis.py              # Módulo: Análisis de texto (NLP/Spacy)
+├── requirements.txt         # Dependencias del proyecto
+├── .gitignore               # Archivos ignorados por seguridad
+└── .env                     # Variables locales (NO SUBIR A GITHUB)
