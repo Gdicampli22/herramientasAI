@@ -46,3 +46,64 @@ herramientasai/
 ├── requirements.txt         # Dependencias del proyecto
 ├── .gitignore               # Archivos ignorados por seguridad
 └── .env                     # Variables locales (NO SUBIR A GITHUB)
+
+
+# ☁️ Guía de Despliegue del Backend (Render)
+
+Esta guía explica cómo publicar la API (FastAPI) en **Render** para que sea accesible desde la aplicación de Streamlit.
+
+## 📋 Prerrequisitos
+1. Tener el código subido a **GitHub** (sin el archivo `.env`).
+2. Tener una cuenta en [Render.com](https://render.com).
+
+## 🚀 Paso 1: Crear el Web Service
+
+1. Entra a tu Dashboard de Render y haz clic en **"New +"**.
+2. Selecciona **"Web Service"**.
+3. Conecta tu repositorio de GitHub (`herramientasai`).
+4. Configura los siguientes campos:
+
+| Campo | Valor Recomendado |
+| :--- | :--- |
+| **Name** | `herramientasai-api` (o el que gustes) |
+| **Region** | Oregon (US West) o la más cercana |
+| **Branch** | `main` |
+| **Runtime** | **Python 3** |
+| **Build Command** | `pip install -r requirements.txt` |
+| **Start Command** | `uvicorn app:app --host 0.0.0.0 --port $PORT` |
+
+> **⚠️ Nota sobre el Start Command:** Si tu archivo principal no se llama `app.py`, cambia la primera parte. Ejemplo: si es `main.py`, usa `uvicorn main:app ...`.
+
+## 🔐 Paso 2: Configurar Variables de Entorno (Environment)
+
+**¡IMPORTANTE!** Aquí es donde pegas tus claves de seguridad. Render actúa como tu archivo `.env` seguro en la nube.
+
+1. En la página del servicio en Render, baja hasta la sección **"Environment Variables"**.
+2. Haz clic en **"Add Environment Variable"**.
+3. Agrega tus claves (las mismas que tenías en tu `.env` local):
+
+   * **Key:** `OPENAI_API_KEY` (o `GOOGLE_API_KEY` según tu código)
+   * **Value:** `tu-clave-que-empieza-con-sk...`
+
+4. Haz clic en **"Save Changes"**.
+
+## ✅ Paso 3: Verificar el Despliegue
+
+1. Render empezará a construir (Build) tu aplicación. Esto tarda unos minutos.
+2. Si todo sale bien, verás un mensaje verde que dice **"Live"**.
+3. Copia la URL que te da Render (ej: `https://herramientasai.onrender.com`).
+4. Abre esa URL en tu navegador y agrega `/docs` al final (ej: `https://herramientasai.onrender.com/docs`).
+   * Si ves la pantalla de Swagger UI, ¡tu Backend está funcionando!
+
+## 🔗 Paso 4: Conectar con Streamlit
+
+Ahora que tienes la URL de Render, debes "decirle" a tu Frontend de Streamlit dónde buscar.
+
+1. Ve a tu App en **Streamlit Community Cloud**.
+2. Entra en **Settings** -> **Secrets**.
+3. Actualiza la variable `mi_api_render` con la URL real que acabas de copiar:
+
+```toml
+# En Streamlit Secrets:
+mi_api_render = "[https://herramientasai.onrender.com](https://herramientasai.onrender.com)"
+
