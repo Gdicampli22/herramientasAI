@@ -5,5 +5,3 @@ python-dotenv
 pydantic
 python-multipart
 requests
-streamlit
-watchdog
