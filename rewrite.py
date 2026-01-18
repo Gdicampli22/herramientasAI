@@ -17,7 +17,7 @@ generation_config = {
 
 # Modelo
 model = genai.GenerativeModel(
-  model_name="gemini-1.5-flash", # Usamos Flash estándar por estabilidad
+  model_name="gemini-3-flash-preview", # Usamos Flash estándar por estabilidad
   generation_config=generation_config,
 )
 
