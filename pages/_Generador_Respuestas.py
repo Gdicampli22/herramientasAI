@@ -1,67 +1,31 @@
 import streamlit as st
 import requests
-from PIL import Image
 
-# --- CONFIGURACIÓN ---
-st.set_page_config(page_title="AI Auto-Respuesta", page_icon="🤖", layout="centered")
-# Si estamos en Streamlit Cloud, usamos la URL de Render.
-# Si estamos en tu PC, usamos localhost.
-if "RENDER_URL" in st.secrets:
-    API_URL = st.secrets["API_URL_RENDER"]
-else:
-    API_URL = "http://127.0.0.1:8000"
-YOUR_NAME = "Gastón Di Campli" # <--- Pon tu nombre
+API_URL = st.secrets.get("BACKEND_URL", "http://127.0.0.1:8000")
 
-# --- HEADER & LOGO ---
-try:
-    logo = Image.open("logo.png")
-    st.image(logo, use_container_width=True)
-except:
-    st.title("🤖 Generador de Respuestas AI")
+st.set_page_config(page_title="Auto-Respuesta", page_icon="🤖")
+st.title("🤖 Generador de Respuestas")
 
-st.markdown("### Genera una respuesta completa desde cero")
+client_msg = st.text_area("Mensaje del Cliente:", height=150)
 
-# --- ENTRADA ---
-client_msg = st.text_area("Mensaje del Cliente (Consulta, Queja, Error):", height=150, placeholder="Ej: El sistema me está dando error 504 cuando intento pagar...")
+col1, col2 = st.columns(2)
+with col1: tone = st.selectbox("Tono:", ["Empático", "Técnico", "Venta"])
+with col2: language = st.selectbox("Idioma:", ["Español", "English", "Português"])
 
-# --- PROCESO ---
-if client_msg:
-    col1, col2 = st.columns(2)
-    with col1:
-        tone = st.selectbox("Tono de Respuesta:", ["Empático y Resolutivo", "Técnico y Formal", "Venta Consultiva"])
-    with col2:
-        language = st.selectbox("Idioma de Respuesta:", ["Español", "English", "Português"])
-        
-    if st.button("🚀 Generar Respuesta", type="primary"):
-        with st.spinner("Analizando y redactando respuesta..."):
+if st.button("🚀 Generar Respuesta", type="primary"):
+    if not client_msg:
+        st.warning("Pega el mensaje del cliente primero.")
+    else:
+        with st.spinner("Analizando caso..."):
             try:
-                # Nota: Llama al endpoint /reply
-                res = requests.post(f"{API_URL}/reply", json={"text": client_msg, "tone": tone, "language": language})
-                if res.status_code == 200:
-                    reply_text = res.json()["reply_text"]
-                    
-                    st.markdown("---")
-                    st.success("✅ ¡Respuesta Generada!")
-                    
-                    # 1. VISUALIZACIÓN CÓMODA
-                    st.subheader("Respuesta Sugerida:")
-                    st.caption("Puedes editar el texto abajo antes de enviar:")
-                    st.text_area(
-                        label="Respuesta",
-                        value=reply_text,
-                        height=300,
-                        label_visibility="collapsed"
-                    )
-                    
-                    # 2. BOTÓN DE COPIAR
-                    with st.expander("📋 Copiar texto con un clic"):
-                        st.code(reply_text, language='text')
-
+                payload = {"text": client_msg, "tone": tone, "language": language}
+                response = requests.post(f"{API_URL}/reply", json=payload)
+                
+                if response.status_code == 200:
+                    data = response.json()
+                    st.success("¡Respuesta Generada!")
+                    st.text_area("Sugerencia:", value=data["reply_text"], height=300)
                 else:
-                    st.error("Error del servidor.")
-            except requests.exceptions.ConnectionError:
-                st.error("No se detecta el backend. Asegúrate de que 'app.py' esté corriendo.")
-
-# --- FOOTER ---
-st.markdown("---")
-st.markdown(f"<div style='text-align: center; color: grey;'>© 2026 {YOUR_NAME} - AI Solutions</div>", unsafe_allow_html=True)
+                    st.error(f"Error: {response.status_code}")
+            except:
+                st.error("Error de conexión con el Backend.")
